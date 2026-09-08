@@ -1,9 +1,5 @@
-package com.devpulse.reactor
+package com.reactor.flow
 
-fun <T, R> SimpleFlow<T>.map(transform: (T) -> R): SimpleFlow<R> = SimpleFlow { sub ->
-    subscribe(object : FlowSubscriber<T> {
-        override fun onNext(item: T) = sub.onNext(transform(item))
-        override fun onError(t: Throwable) = sub.onError(t)
-        override fun onComplete() = sub.onComplete()
-    })
+fun <T> FlowPipeline<T>.distinctUntilChanged(): FlowPipeline<T> {
+    return FlowPipeline.fromIterable(this.toList().distinct())
 }
